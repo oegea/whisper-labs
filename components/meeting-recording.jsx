@@ -32,7 +32,7 @@ export function MeetingRecording({meeting}) {
   }
   return (
     (<main className="flex flex-col lg:flex-row gap-6 p-6 justify-center">
-      <div className="flex flex-col gap-6 w-full lg:w-1/2 rounded-lg border border-gray-200 bg-white text-gray-950 shadow-sm dark:border-gray-800 dark:bg-gray-950 dark:text-gray-50 w-full max-w-md p-8 space-y-4">
+      <div className="flex flex-col gap-6 w-full lg:w-1/2 rounded-lg border border-gray-200 bg-white text-gray-950 shadow-sm w-full max-w-md p-8 space-y-4">
         <header className="flex flex-col gap-2">
           <h1 className="text-3xl font-bold">{meeting.title}</h1>
         </header>
@@ -40,7 +40,7 @@ export function MeetingRecording({meeting}) {
           {meeting.goals.map((goal, index) => (
             <div key={index} className="flex flex-col gap-1">
               <h2 className="text-lg font-medium">Goal {index + 1}: {goal.description}</h2>
-              <p className="text-sm text-gray-500 dark:text-gray-400">Estimated Time: {goal.time} minutes</p>
+              <p className="text-sm text-gray-500">Estimated Time: {goal.time} minutes</p>
             </div>
           ))}
 
@@ -49,16 +49,16 @@ export function MeetingRecording({meeting}) {
           )}
         </div>
         <div className="flex items-center gap-2">
-          <ClockIcon className="w-6 h-6 text-gray-500 dark:text-gray-400" />
+          <ClockIcon className="w-6 h-6 text-gray-500" />
           <p className="text-lg font-medium">Timing: {Math.floor((timing.current.end - Date.now()) / 1000 / 60)} min / {meeting.totalTime} min</p>
         </div>
       </div>
-      <div className="flex flex-col gap-6 w-full lg:w-1/2 rounded-lg border border-gray-200 bg-white text-gray-950 shadow-sm dark:border-gray-800 dark:bg-gray-950 dark:text-gray-50 w-full max-w-md p-8 space-y-4">
+      <div className="flex flex-col gap-6 w-full lg:w-1/2 rounded-lg border border-gray-200 bg-white text-gray-950 shadow-sm w-full max-w-md p-8 space-y-4">
         <header className="flex flex-col gap-2">
           <h1 className="text-3xl font-bold">Meeting Transcription</h1>
-          <p className="text-lg text-gray-500 dark:text-gray-400">Real-time transcription of the ongoing meeting</p>
+          <p className="text-lg text-gray-500">Real-time transcription of the ongoing meeting</p>
           <Button
-            className="group relative w-full flex justify-center py-2 px-4 border border-gray-200 border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:border-gray-800"
+            className="group relative w-full flex justify-center py-2 px-4 border border-gray-200 border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
             onClick={() => setPaused(!paused)}
           >
             {paused ? "Resume" : "Pause"}

@@ -12,12 +12,12 @@ export function Header() {
         className="absolute inset-0 bg-gradient-to-r from-pink-200 via-purple-200 to-indigo-200 opacity-20 animate-pulse-header" />
       <nav className="container mx-auto flex items-center justify-center gap-8 z-10">
         <Link
-          className="text-lg font-semibold text-gray-900 hover:text-gray-700 dark:text-gray-100 dark:hover:text-gray-300"
+          className="text-lg font-semibold text-gray-900 hover:text-gray-700"
           href="/">
           Assistant
         </Link>
         <Link
-          className="text-lg font-semibold text-gray-900 hover:text-gray-700 dark:text-gray-100 dark:hover:text-gray-300"
+          className="text-lg font-semibold text-gray-900 hover:text-gray-700"
           href="/configuration">
           Configuration
         </Link>

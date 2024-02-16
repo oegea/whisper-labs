@@ -12,11 +12,11 @@ export function MeetingForm({onSubmit}) {
   const [meetingGoals, setMeetingGoals] = useState([])
   return (
     (<main
-      className="flex flex-col items-center justify-center min-h-screen py-12 bg-gray-50 sm:px-6 lg:px-8 dark:bg-gray-900">
+      className="flex flex-col items-center justify-center min-h-screen py-12 bg-gray-50 sm:px-6 lg:px-8">
       <div className="w-full max-w-md space-y-8">
         <div>
           <h2
-            className="mt-6 text-center text-3xl font-extrabold text-gray-900 dark:text-gray-100">
+            className="mt-6 text-center text-3xl font-extrabold text-gray-900">
             Configure a New Meeting
           </h2>
         </div>
@@ -28,7 +28,7 @@ export function MeetingForm({onSubmit}) {
             <div>
               <Label htmlFor="meeting-title">Meeting Title</Label>
               <Input
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-200 border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm dark:border-gray-800"
+                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-200 border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                 id="meeting-title"
                 name="meeting-title"
                 placeholder="Enter the meeting title"
@@ -74,7 +74,7 @@ export function MeetingForm({onSubmit}) {
             <div>
               <Label htmlFor="total-duration">Total Duration</Label>
               <Input
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-200 border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm dark:border-gray-800"
+                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-200 border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                 disabled
                 id="total-duration"
                 name="total-duration"
@@ -85,7 +85,7 @@ export function MeetingForm({onSubmit}) {
           </div>
           <div>
             <Button
-              className="group relative w-full flex justify-center py-2 px-4 border border-gray-200 border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:border-gray-800"
+              className="group relative w-full flex justify-center py-2 px-4 border border-gray-200 border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
               type="submit">
               Start the meeting
             </Button>

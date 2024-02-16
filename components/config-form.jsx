@@ -7,16 +7,17 @@ import { CardTitle, CardDescription, CardHeader, CardContent, Card } from "@/com
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
+import {getLocalStorage} from "@/lib/utils"
 
 export function ConfigForm() {
 
   const getOpenAIKey = () => {
-    const key = localStorage.getItem("openai-key");
+    const key = getLocalStorage()?.getItem("openai-key");
     return (key === null) ? "" : key;
   }
 
   const saveOpenAIKey = (key) => {
-    localStorage.setItem("openai-key", key);
+    getLocalStorage()?.setItem("openai-key", key);
   }
 
   const [openAIKey, setOpenAIKey] = useState(getOpenAIKey())

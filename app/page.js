@@ -13,7 +13,7 @@ export default function Home() {
   }
 
   if (getLocalStorage().getItem("openai-key") === null || getLocalStorage().getItem("openai-key") === ""){
-    return <p>Please configure your OpenAI credentials in order to start a new meeting.</p>
+    return <p className="text-center">Please configure your OpenAI credentials in order to start a new meeting.</p>
   }
 
   return (

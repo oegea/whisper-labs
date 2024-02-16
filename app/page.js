@@ -8,15 +8,12 @@ export default function Home() {
 
   const [meeting, setMeeting] = useState(null);
 
-  useEffect(() => {
-    if (getLocalStorage().getItem("openai-key") === null || getLocalStorage().getItem("openai-key") === ""){
-      window.href = "/configuration";
-      return null
-    }
-  }, []);
-
   const onNewMeeting = (meeting) => {
     setMeeting(meeting);
+  }
+
+  if (getLocalStorage().getItem("openai-key") === null || getLocalStorage().getItem("openai-key") === ""){
+    return <p>Please configure your OpenAI credentials in order to start a new meeting.</p>
   }
 
   return (

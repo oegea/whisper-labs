@@ -13,18 +13,18 @@ export function MeetingForm({onSubmit}) {
   return (
     (<main
       className="flex flex-col items-center justify-center min-h-screen py-12 bg-gray-50 sm:px-6 lg:px-8">
-      <div className="w-full max-w-md space-y-8">
+      <div className="w-full max-w-md space-y-8 rounded-lg border border-gray-200 bg-white text-gray-950 shadow-sm p-6">
         <div>
           <h2
             className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            Configure a New Meeting
+            Start a meeting
           </h2>
         </div>
         <form className="mt-8 space-y-6" onSubmit={ (e) => {
           e.preventDefault();
           onSubmit({ title: meetingTitle, goals: meetingGoals, totalTime: meetingGoals.reduce((acc, goal) => acc + parseInt(goal.time), 0)});
         }}>
-          <div className="rounded-md shadow-sm -space-y-px">
+          <div className="rounded-md shadow-sm">
             <div>
               <Label htmlFor="meeting-title">Meeting Title</Label>
               <Input
@@ -38,7 +38,15 @@ export function MeetingForm({onSubmit}) {
                 onChange = {(e) => setMeetingTitle(e.target.value)} />
             </div>
             <div>
-              <Label htmlFor="meeting-goals">Meeting Goals</Label>
+              <Label htmlFor="meeting-goals" className="mr-5 mt-4 mb-4">Meeting Goals</Label>
+              <Button className="mt-4 mb-4" variant="outline" onClick={(e) => {
+                e.preventDefault();
+                const goals = meetingGoals.slice();
+                goals.push({ description: '', time: 0 });
+                setMeetingGoals(goals);
+              }}>
+                Add Goal
+              </Button>
               <div className="space-y-4">
                 {meetingGoals.map((goal, index) => (
                   <div key={index} className="flex items-center space-x-2">
@@ -47,7 +55,7 @@ export function MeetingForm({onSubmit}) {
                       goals[index].description = e.target.value;
                       setMeetingGoals(goals);
                     }} />
-                    <Input className="w-24" id={`time-${index + 1}`} placeholder="Time (mins)" type="number" value={goal.time} onChange={(e) => {
+                    <Input className="w-24" id={`time-${index + 1}`} placeholder="Time (mins)" type="number" min="0" value={goal.time} onChange={(e) => {
                       const goals = meetingGoals.slice();
                       goals[index].time = e.target.value;
                       setMeetingGoals(goals);
@@ -61,17 +69,9 @@ export function MeetingForm({onSubmit}) {
                     </Button>
                   </div>
                 ))}
-                <Button className="mt-2" variant="outline" onClick={(e) => {
-                  e.preventDefault();
-                  const goals = meetingGoals.slice();
-                  goals.push({ description: '', time: 0 });
-                  setMeetingGoals(goals);
-                }}>
-                  Add Goal
-                </Button>
               </div>
             </div>
-            <div>
+            <div className="mt-4 mb-4">
               <Label htmlFor="total-duration">Total Duration</Label>
               <Input
                 className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-200 border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
@@ -80,7 +80,10 @@ export function MeetingForm({onSubmit}) {
                 name="total-duration"
                 placeholder="Calculated automatically"
                 type="text" 
-                value = {meetingGoals.reduce((acc, goal) => acc + parseInt(goal.time), 0)} />
+                value = {meetingGoals.reduce((acc, goal) => {
+                  const time = parseInt(goal.time);
+                  return acc + (isNaN(time) ? 0 : time);
+                }, 0)} />
             </div>
           </div>
           <div>

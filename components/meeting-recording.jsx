@@ -6,11 +6,16 @@ import {useEffect, useRef, useState} from 'react'
 import { ScrollArea } from "@/components/ui/scroll-area"
 import {record} from "@/lib/recording"
 import { Button } from "@/components/ui/button"
+import {getModeratorSuggestion} from "@/lib/moderatorSuggestions"
+
+const MOD_MESSAGES_INTERVAL_MINUTES = 5;
 
 export function MeetingRecording({meeting}) {
 
   const [transcription, setTranscription] = useState([]);
   const [paused, setPaused] = useState(false);
+  const lastModMessage = useRef(Date.now());
+  const [modMessage, setModMessage] = useState('');
 
   const timing = useRef({
     start: Date.now(),
@@ -22,57 +27,80 @@ export function MeetingRecording({meeting}) {
     record(onTranscription);
   }, [transcription, paused])
 
-  const onTranscription = (text) => {
-    const newTranscription = transcription.slice();
+  const getCurrentTime = () => new Date(Date.now() - timing.current.start).toISOString().substr(11, 8);
+  const getLeftTime = () => Math.floor((timing.current.end - Date.now()) / 1000 / 60);
+  const addTranscription = (transcriptionState, text, role) => {
+    const newTranscription = transcriptionState.slice();
     newTranscription.unshift({
       text: text,
-      time: new Date(Date.now() - timing.current.start).toISOString().substr(11, 8)
+      role,
+      time: getCurrentTime()
     });
-    setTranscription(newTranscription);
+    return newTranscription;
+  }
+  const onTranscription = async (text) => {
+    let newTranscriptionState = addTranscription(transcription, text, 'user');
+
+    if (Date.now() - lastModMessage.current > MOD_MESSAGES_INTERVAL_MINUTES * 60 * 1000) {
+      lastModMessage.current = Date.now();
+      const suggestion = await getModeratorSuggestion(getCurrentTime(), getLeftTime(), meeting, newTranscriptionState);
+      setModMessage(suggestion);
+      newTranscriptionState = addTranscription(newTranscriptionState, suggestion, 'assistant');
+    }
+
+    setTranscription(newTranscriptionState);
   }
   return (
-    (<main className="flex flex-col lg:flex-row gap-6 p-6 justify-center">
-      <div className="flex flex-col gap-6 w-full lg:w-1/2 rounded-lg border border-gray-200 bg-white text-gray-950 shadow-sm w-full max-w-md p-8 space-y-4">
-        <header className="flex flex-col gap-2">
-          <h1 className="text-3xl font-bold">{meeting.title}</h1>
-        </header>
-        <div className="flex flex-col gap-4">
-          {meeting.goals.map((goal, index) => (
-            <div key={index} className="flex flex-col gap-1">
-              <h2 className="text-lg font-medium">Goal {index + 1}: {goal.description}</h2>
-              <p className="text-sm text-gray-500">Estimated Time: {goal.time} minutes</p>
-            </div>
-          ))}
+    (<>
+      <div className="flex flex-col items-center justify-center min-h-screen py-2">
+        {modMessage !== '' ? <div class="w-1/2 bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4" role="alert">
+          <p class="font-bold">Quick tip about the meeting</p>
+          <p>{modMessage}</p>
+        </div> : null}
+        <main className="flex flex-col w-1/2 lg:flex-row gap-6 p-6 justify-center">
+          <div className="flex flex-col gap-6 w-full lg:w-1/2 rounded-lg border border-gray-200 bg-white text-gray-950 shadow-sm w-full max-w-md p-8 space-y-4">
+            <header className="flex flex-col gap-2">
+              <h1 className="text-3xl font-bold">{meeting.title}</h1>
+            </header>
+            <div className="flex flex-col gap-4">
+              {meeting.goals.map((goal, index) => (
+                <div key={index} className="flex flex-col gap-1">
+                  <h2 className="text-lg font-medium">Goal {index + 1}: {goal.description}</h2>
+                  <p className="text-sm text-gray-500">Estimated Time: {goal.time} minutes</p>
+                </div>
+              ))}
 
-          {meeting.goals.length === 0 && (
-            <p className="text-lg font-medium">Oh no! No goals have been set for this meeting.</p>
-          )}
-        </div>
-        <div className="flex items-center gap-2">
-          <ClockIcon className="w-6 h-6 text-gray-500" />
-          <p className="text-lg font-medium">Timing: {Math.floor((timing.current.end - Date.now()) / 1000 / 60)} min / {meeting.totalTime} min</p>
-        </div>
-      </div>
-      <div className="flex flex-col gap-6 w-full lg:w-1/2 rounded-lg border border-gray-200 bg-white text-gray-950 shadow-sm w-full max-w-md p-8 space-y-4">
-        <header className="flex flex-col gap-2">
-          <h1 className="text-3xl font-bold">Meeting Transcription</h1>
-          <p className="text-lg text-gray-500">Real-time transcription of the ongoing meeting</p>
-          <Button
-            className="group relative w-full flex justify-center py-2 px-4 border border-gray-200 border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-            onClick={() => setPaused(!paused)}
-          >
-            {paused ? "Resume" : "Pause"}
-          </Button>
-        </header>
-        <ScrollArea className="h-72 w-full rounded-md border">
-          <div className="p-4 text-sm">
-            {transcription.map((transcript, index) => (
-              <p key={index} className="mt-4 leading-7">[{transcript.time}] - {transcript.text}</p>
-            ))}
+              {meeting.goals.length === 0 && (
+                <p className="text-lg font-medium">Oh no! No goals have been set for this meeting.</p>
+              )}
+            </div>
+            <div className="flex items-center gap-2">
+              <ClockIcon className="w-6 h-6 text-gray-500" />
+              <p className="text-lg font-medium">Timing: {getLeftTime()} min / {meeting.totalTime} min</p>
+            </div>
           </div>
-        </ScrollArea>
+          <div className="flex flex-col gap-6 w-full lg:w-1/2 rounded-lg border border-gray-200 bg-white text-gray-950 shadow-sm w-full max-w-md p-8 space-y-4">
+            <header className="flex flex-col gap-2">
+              <h1 className="text-3xl font-bold">Meeting Transcription</h1>
+              <p className="text-lg text-gray-500">Real-time transcription of the ongoing meeting</p>
+              <Button
+                className="group relative w-full flex justify-center py-2 px-4 border border-gray-200 border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                onClick={() => setPaused(!paused)}
+              >
+                {paused ? "Resume" : "Pause"}
+              </Button>
+            </header>
+            <ScrollArea className="h-72 w-full rounded-md border">
+              <div className="p-4 text-sm">
+                {transcription.map((transcript, index) => (
+                  <p key={index} className="mt-4 leading-7">{transcript.role === 'assistant' ? 'MODERATOR: ' : ''}[{transcript.time}] - {transcript.text}</p>
+                ))}
+              </div>
+            </ScrollArea>
+          </div>
+        </main>
       </div>
-    </main>)
+    </>)
   );
 }
 

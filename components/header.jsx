@@ -16,6 +16,7 @@ export function Header() {
           href="/">
           Assistant
         </Link>
+        <img src="/logo.png" alt="Logo" width="70" />
         <Link
           className="text-lg font-semibold text-gray-900 hover:text-gray-700"
           href="/configuration">

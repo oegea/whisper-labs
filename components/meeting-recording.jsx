@@ -41,12 +41,12 @@ export function MeetingRecording({meeting}) {
   const onTranscription = async (text) => {
     let newTranscriptionState = addTranscription(transcription, text, 'user');
 
-    if (Date.now() - lastModMessage.current > MOD_MESSAGES_INTERVAL_MINUTES * 60 * 1000) {
+    /*if (Date.now() - lastModMessage.current > MOD_MESSAGES_INTERVAL_MINUTES * 60 * 1000) {
       lastModMessage.current = Date.now();
       const suggestion = await getModeratorSuggestion(getCurrentTime(), getLeftTime(), meeting, newTranscriptionState);
       setModMessage(suggestion);
       newTranscriptionState = addTranscription(newTranscriptionState, suggestion, 'assistant');
-    }
+    }*/
 
     setTranscription(newTranscriptionState);
   }

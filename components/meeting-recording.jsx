@@ -52,13 +52,14 @@ export function MeetingRecording({meeting}) {
   }
   return (
     (<>
+      <div class="fixed top-[100px] text-center w-full font-bold text-2xl">{transcription?.[0]?.text || ''}</div>
       <div className="flex flex-col items-center justify-center min-h-screen py-2">
-        {modMessage !== '' ? <div class="w-1/2 bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4" role="alert">
+        {/*modMessage !== '' ? <div class="w-1/2 bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4" role="alert">
           <p class="font-bold">Quick tip about the meeting</p>
           <p>{modMessage}</p>
-        </div> : null}
-        <main className="flex flex-col w-1/2 lg:flex-row gap-6 p-6 justify-center">
-          <div className="flex flex-col gap-6 w-full lg:w-1/2 rounded-lg border border-gray-200 bg-white text-gray-950 shadow-sm w-full max-w-md p-8 space-y-4">
+        </div> : null*/}
+        <main className="fixed bottom-0 flex flex-col w-full lg:flex-row gap-6 p-6 justify-center">
+          {/*<div className="flex flex-col gap-6 w-full lg:w-1/2 rounded-lg border border-gray-200 bg-white text-gray-950 shadow-sm w-full max-w-md p-8 space-y-4">
             <header className="flex flex-col gap-2">
               <h1 className="text-3xl font-bold">{meeting.title}</h1>
             </header>
@@ -78,10 +79,10 @@ export function MeetingRecording({meeting}) {
               <ClockIcon className="w-6 h-6 text-gray-500" />
               <p className="text-lg font-medium">Timing: {getLeftTime()} min / {meeting.totalTime} min</p>
             </div>
-          </div>
-          <div className="flex flex-col gap-6 w-full lg:w-1/2 rounded-lg border border-gray-200 bg-white text-gray-950 shadow-sm w-full max-w-md p-8 space-y-4">
+          </div>*/}
+          <div className="flex flex-col gap-6 w-full rounded-lg border border-gray-200 bg-white text-gray-950 shadow-sm w-full p-8 space-y-4">
             <header className="flex flex-col gap-2">
-              <h1 className="text-3xl font-bold">Meeting Transcription</h1>
+              <h1 className="text-3xl font-bold">{meeting.title}</h1>
               <p className="text-lg text-gray-500">Real-time transcription of the ongoing meeting</p>
               <Button
                 className="group relative w-full flex justify-center py-2 px-4 border border-gray-200 border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"

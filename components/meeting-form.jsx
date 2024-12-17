@@ -37,7 +37,7 @@ export function MeetingForm({onSubmit}) {
                 value = {meetingTitle}
                 onChange = {(e) => setMeetingTitle(e.target.value)} />
             </div>
-            <div>
+            {/*<div>
               <Label htmlFor="meeting-goals" className="mr-5 mt-4 mb-4">Meeting Goals</Label>
               <Button className="mt-4 mb-4" variant="outline" onClick={(e) => {
                 e.preventDefault();
@@ -70,8 +70,8 @@ export function MeetingForm({onSubmit}) {
                   </div>
                 ))}
               </div>
-            </div>
-            <div className="mt-4 mb-4">
+            </div>*/}
+            {/*<div className="mt-4 mb-4">
               <Label htmlFor="total-duration">Total Duration</Label>
               <Input
                 className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-200 border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
@@ -84,7 +84,7 @@ export function MeetingForm({onSubmit}) {
                   const time = parseInt(goal.time);
                   return acc + (isNaN(time) ? 0 : time);
                 }, 0)} />
-            </div>
+            </div>*/}
           </div>
           <div>
             <Button
